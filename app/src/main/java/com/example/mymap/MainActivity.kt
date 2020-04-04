@@ -4,11 +4,15 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.text.format.DateFormat
+import android.view.Menu
+import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -17,16 +21,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
-import androidx.core.app.ComponentActivity
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -39,7 +36,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var realm: Realm
 
 
-
+    //メニュー表示させる
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,18 +52,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         realm = Realm.getDefaultInstance()
+
         memoBtn.setOnClickListener{
             val intent = Intent(this, AddActivity::class.java)
             intent.putExtra("lat", lastLocation.latitude)
             intent.putExtra("lng", lastLocation.longitude)
             startActivity(intent)
         }
-
-
-
     }
-
-
 
     override fun onStart() {
         super.onStart()
@@ -75,9 +72,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         checkPermission()
-
-
-
     }
 
     override fun onPause(){
@@ -171,15 +165,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             //マーカー追加
             mMap.addMarker(marker)
         }
-
-
     }
-
 
     private fun showToast(msg: String){
         val toast = Toast.makeText(this, msg, Toast.LENGTH_LONG)
     }
 
-
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            R.id.list ->{
+                val intent = Intent(this, ListActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

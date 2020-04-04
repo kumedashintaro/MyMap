@@ -34,10 +34,6 @@
         map:uiZoomControls="true"
         map:uiZoomGestures="true"
         tools:context=".MainActivity"
-
-
-
-
         />
 
     <TextView

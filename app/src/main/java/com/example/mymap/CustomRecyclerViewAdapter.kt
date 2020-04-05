@@ -5,8 +5,11 @@ import android.graphics.Color
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmResults
+
+
 
 class CustomRecyclerViewAdapter(realmResults: RealmResults<Memo>): RecyclerView.Adapter<ViewHolder>(){
     private val rResults: RealmResults<Memo> = realmResults
@@ -25,7 +28,8 @@ class CustomRecyclerViewAdapter(realmResults: RealmResults<Memo>): RecyclerView.
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         val mymap = rResults[position]
         holder.datetimeText?.text = DateFormat.format("yyyyy/MM/dd kk:mm", mymap?.dateTime)
-        holder.memeText?.text = mymap?.memo.toString()
+        holder.memoText?.text = mymap?.memo.toString()
+        holder.picture?.text = mymap?.picture.toString()//textではうまくいきません。
 
         holder.itemView.setBackgroundColor(if (position % 2 == 0) Color.TRANSPARENT else Color.WHITE)
 

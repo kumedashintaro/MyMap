@@ -2,10 +2,13 @@ package com.example.mymap
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
@@ -31,6 +34,7 @@ class AddActivity : AppCompatActivity() {
     }
     private var mPictureUri: Uri? = null
 
+
     @SuppressLint("WrongThread")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +56,7 @@ class AddActivity : AppCompatActivity() {
         val lng = intent.getDoubleExtra("lng", 0.0)
 
 
-        imageView.setOnClickListener{
+        pictureView.setOnClickListener{
                 // パーミッションの許可状態を確認する
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -70,16 +74,23 @@ class AddActivity : AppCompatActivity() {
 
         }
 
-// 添付画像を取得する
-
-
-
-
 
         saveBtn.setOnClickListener {
 
             when(mymapId){
                 0L -> {
+                    // 添付画像を取得する
+                    val drawable = pictureView.drawable as? BitmapDrawable
+
+                    // 添付画像が設定されていれば画像を取り出してBASE64エンコードする
+
+                        val bitmap = drawable?.bitmap
+                        val baos = ByteArrayOutputStream()
+                    if (bitmap != null) {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos)
+                    }
+                        val bitmapString = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
+
 
                     val memoStr = memoEdit.text?.toString() ?: ""
                     realm.executeTransaction {
@@ -90,6 +101,7 @@ class AddActivity : AppCompatActivity() {
                         memo.lat = lat
                         memo.lng = lng
                         memo.memo = memoStr
+                        memo.picture = bitmapString
                     }
                 }
                 //修正処理
@@ -132,7 +144,6 @@ class AddActivity : AppCompatActivity() {
             toast.show()
         }
 
-
     private fun showChooser() {
         // ギャラリーから選択するIntent
         val galleryIntent = Intent(Intent.ACTION_GET_CONTENT)
@@ -157,6 +168,48 @@ class AddActivity : AppCompatActivity() {
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent))
 
         startActivityForResult(chooserIntent, CHOOSER_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == CHOOSER_REQUEST_CODE) {
+
+            if (resultCode != Activity.RESULT_OK) {
+                if (mPictureUri != null) {
+                    contentResolver.delete(mPictureUri!!, null, null)
+                    mPictureUri = null
+                }
+                return
+            }
+
+            // 画像を取得
+            val uri = if (data == null || data.data == null) mPictureUri else data.data
+
+            // URIからBitmapを取得する
+            val image: Bitmap
+            try {
+                val contentResolver = contentResolver
+                val inputStream = contentResolver.openInputStream(uri!!)
+                image = BitmapFactory.decodeStream(inputStream)
+                inputStream!!.close()
+            } catch (e: Exception) {
+                return
+            }
+
+            // 取得したBimapの長辺を500ピクセルにリサイズする
+            val imageWidth = image.width
+            val imageHeight = image.height
+            val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight) // (1)
+
+            val matrix = Matrix()
+            matrix.postScale(scale, scale)
+
+            val resizedImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
+
+            // BitmapをImageViewに設定する
+            pictureView.setImageBitmap(resizedImage)
+
+            mPictureUri = null
+        }
     }
 
     }

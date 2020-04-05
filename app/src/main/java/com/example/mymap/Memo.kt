@@ -12,6 +12,7 @@ open  class Memo : RealmObject() {
     var lat : Double = 0.0
     var lng: Double = 0.0
     var memo: String = ""
+    var picture: String = ""
 
 
 }

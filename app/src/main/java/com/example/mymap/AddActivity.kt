@@ -77,19 +77,19 @@ class AddActivity : AppCompatActivity() {
 
         saveBtn.setOnClickListener {
 
-            when(mymapId){
+            when (mymapId) {
                 0L -> {
                     // 添付画像を取得する
                     val drawable = pictureView.drawable as? BitmapDrawable
 
                     // 添付画像が設定されていれば画像を取り出してBASE64エンコードする
 
-                        val bitmap = drawable?.bitmap
-                        val baos = ByteArrayOutputStream()
+                    val bitmap = drawable?.bitmap
+                    val baos = ByteArrayOutputStream()
                     if (bitmap != null) {
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos)
                     }
-                        val bitmapString = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
+                    val bitmapString = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
 
 
                     val memoStr = memoEdit.text?.toString() ?: ""

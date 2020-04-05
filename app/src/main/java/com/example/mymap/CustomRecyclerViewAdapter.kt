@@ -2,6 +2,7 @@ package com.example.mymap
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmResults
 
 
-
-class CustomRecyclerViewAdapter(realmResults: RealmResults<Memo>): RecyclerView.Adapter<ViewHolder>(){
+class CustomRecyclerViewAdapter(realmResults: RealmResults<Memo>) :
+    RecyclerView.Adapter<ViewHolder>() {
     private val rResults: RealmResults<Memo> = realmResults
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
@@ -25,18 +26,24 @@ class CustomRecyclerViewAdapter(realmResults: RealmResults<Memo>): RecyclerView.
         return rResults.size
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int){
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mymap = rResults[position]
+
+        var pictureDrawable = mymap?.picture as Drawable//Drawableに変換
+
         holder.datetimeText?.text = DateFormat.format("yyyyy/MM/dd kk:mm", mymap?.dateTime)
         holder.memoText?.text = mymap?.memo.toString()
-        holder.picture?.text = mymap?.picture.toString()//textではうまくいきません。
+        holder.picture?.setImageDrawable(pictureDrawable)//Drawableに変換したものをセット
 
         holder.itemView.setBackgroundColor(if (position % 2 == 0) Color.TRANSPARENT else Color.WHITE)
 
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             val intent = Intent(it.context, AddActivity::class.java)
             intent.putExtra("id", mymap?.id)
             it.context.startActivity(intent)
         }
     }
+
 }
+
+

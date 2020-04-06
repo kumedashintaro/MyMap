@@ -14,5 +14,4 @@ open class Memo : RealmObject() {
     var memo: String = ""
     var picture: String = ""
 
-
 }

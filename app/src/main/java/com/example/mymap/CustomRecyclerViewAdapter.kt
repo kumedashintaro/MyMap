@@ -1,9 +1,12 @@
 package com.example.mymap
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.format.DateFormat
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -29,7 +32,9 @@ class CustomRecyclerViewAdapter(realmResults: RealmResults<Memo>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mymap = rResults[position]
 
-        var pictureDrawable = mymap?.picture as Drawable//Drawableに変換
+        val decodedString = Base64.decode(mymap?.picture, Base64.DEFAULT) // 文字列をbase64形式に変更
+        val decodeByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size) // base64文字列をBitmap形式に変更
+        val pictureDrawable = BitmapDrawable(decodeByte) // Bitmap形式の画像をDrawable型に変更
 
         holder.datetimeText?.text = DateFormat.format("yyyyy/MM/dd kk:mm", mymap?.dateTime)
         holder.memoText?.text = mymap?.memo.toString()

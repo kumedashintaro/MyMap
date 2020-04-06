@@ -47,6 +47,15 @@ class AddActivity : AppCompatActivity() {
             val mymap = realm.where<Memo>()
                 .equalTo("id", mymapId).findFirst()
             memoEdit.setText(mymap?.memo.toString())
+
+
+            val decodedString = Base64.decode(mymap?.picture, Base64.DEFAULT) // 文字列をbase64形式に変更
+            val decodeByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size) // base64文字列をBitmap形式に変更
+            val pictureDrawable = BitmapDrawable(decodeByte) // Bitmap形式の画像をDrawable型に変更
+            pictureView.setImageDrawable(pictureDrawable)//Drawableに変換したものをセット
+
+
+
             deleteBtn.visibility = View.VISIBLE
         }else{
             deleteBtn.visibility = View.INVISIBLE
@@ -79,18 +88,17 @@ class AddActivity : AppCompatActivity() {
 
             when (mymapId) {
                 0L -> {
+////////////////////////////////////////////////////////////////////////////////////////////////////////
                     // 添付画像を取得する
                     val drawable = pictureView.drawable as? BitmapDrawable
-
                     // 添付画像が設定されていれば画像を取り出してBASE64エンコードする
-
                     val bitmap = drawable?.bitmap
                     val baos = ByteArrayOutputStream()
                     if (bitmap != null) {
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos)
                     }
                     val bitmapString = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                     val memoStr = memoEdit.text?.toString() ?: ""
                     realm.executeTransaction {
@@ -107,10 +115,25 @@ class AddActivity : AppCompatActivity() {
                 //修正処理
                 else -> {
                     val memoStr = memoEdit.text?.toString() ?: ""
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    // 添付画像を取得する
+                    val drawable = pictureView.drawable as? BitmapDrawable
+                    // 添付画像が設定されていれば画像を取り出してBASE64エンコードする
+                    val bitmap = drawable?.bitmap
+                    val baos = ByteArrayOutputStream()
+                    if (bitmap != null) {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos)
+                    }
+                    val bitmapString = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
                     realm.executeTransaction{
                         val mymap = realm.where<Memo>()
                             .equalTo("id", mymapId).findFirst()
                         mymap?.memo = memoStr
+                        mymap?.picture = bitmapString
                     }
                 }
             }

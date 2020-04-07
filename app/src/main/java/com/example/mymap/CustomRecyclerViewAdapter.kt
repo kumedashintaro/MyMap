@@ -33,7 +33,11 @@ class CustomRecyclerViewAdapter(realmResults: RealmResults<Memo>) :
         val mymap = rResults[position]
 
         val decodedString = Base64.decode(mymap?.picture, Base64.DEFAULT) // 文字列をbase64形式に変更
-        val decodeByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size) // base64文字列をBitmap形式に変更
+        val decodeByte = BitmapFactory.decodeByteArray(
+            decodedString,
+            0,
+            decodedString.size
+        ) // base64文字列をBitmap形式に変更
         val pictureDrawable = BitmapDrawable(decodeByte) // Bitmap形式の画像をDrawable型に変更
 
         holder.datetimeText?.text = DateFormat.format("yyyyy/MM/dd kk:mm", mymap?.dateTime)

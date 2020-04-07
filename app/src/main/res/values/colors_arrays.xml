@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="markercolor_labels">
+        <item>赤</item>
+        <item>青</item>
+        <item>緑</item>
+    </string-array>
+    <string-array name="markercolor_values">
+        <item>red</item>
+        <item>bule</item>
+        <item>green</item>
+    </string-array>
+</resources>

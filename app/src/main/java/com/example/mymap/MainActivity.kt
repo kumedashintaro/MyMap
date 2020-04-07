@@ -1,6 +1,7 @@
 package com.example.mymap
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -14,6 +15,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.preference.PreferenceManager
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -179,9 +181,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 .title(DateFormat.format("yyyy/MM/dd kk:mm", memo.dateTime).toString())
                 .snippet(memo.memo)
                 .draggable(false)  //マーカーはドラッグ不可
+
             //マーカーの外観
-            val descriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
-            marker.icon(descriptor)
+            val pref = getSharedPreferences("preferences", Context.MODE_PRIVATE)
+            val stringValue = pref.getString("markercolor_values", "")
+
+            if (stringValue == "red") {
+                val descriptor =
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+                marker.icon(descriptor)
+            } else if(stringValue == "blue"){
+                val descriptor =
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
+                marker.icon(descriptor)
+            }else if(stringValue == "green"){
+                val descriptor =
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+                marker.icon(descriptor)
+            }
+
 
             //マーカー追加
             mMap.addMarker(marker)
@@ -198,7 +216,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 val intent = Intent(this, ListActivity::class.java)
                 startActivity(intent)
             }
+            R.id.markersetting -> {
+                val intent = Intent(this, MarkerSetActivity::class.java)
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
+
 }

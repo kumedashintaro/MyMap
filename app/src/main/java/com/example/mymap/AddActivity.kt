@@ -32,6 +32,7 @@ class AddActivity : AppCompatActivity() {
         private val PERMISSIONS_REQUEST_CODE = 100
         private val CHOOSER_REQUEST_CODE = 100
     }
+
     private var mPictureUri: Uri? = null
 
 
@@ -43,21 +44,24 @@ class AddActivity : AppCompatActivity() {
 
 
         val mymapId = intent.getLongExtra("id", 0L)//一覧からクリックされた場合IDを受け取る
-        if (mymapId > 0L){
+        if (mymapId > 0L) {
             val mymap = realm.where<Memo>()
                 .equalTo("id", mymapId).findFirst()
             memoEdit.setText(mymap?.memo.toString())
 
 
             val decodedString = Base64.decode(mymap?.picture, Base64.DEFAULT) // 文字列をbase64形式に変更
-            val decodeByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size) // base64文字列をBitmap形式に変更
+            val decodeByte = BitmapFactory.decodeByteArray(
+                decodedString,
+                0,
+                decodedString.size
+            ) // base64文字列をBitmap形式に変更
             val pictureDrawable = BitmapDrawable(decodeByte) // Bitmap形式の画像をDrawable型に変更
             pictureView.setImageDrawable(pictureDrawable)//Drawableに変換したものをセット
 
 
-
             deleteBtn.visibility = View.VISIBLE
-        }else{
+        } else {
             deleteBtn.visibility = View.INVISIBLE
         }
 
@@ -65,21 +69,24 @@ class AddActivity : AppCompatActivity() {
         val lng = intent.getDoubleExtra("lng", 0.0)
 
 
-        pictureView.setOnClickListener{
-                // パーミッションの許可状態を確認する
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                        // 許可されている
-                        showChooser()
-                    } else {
-                        // 許可されていないので許可ダイアログを表示する
-                        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), PERMISSIONS_REQUEST_CODE)
-
-                        return@setOnClickListener
-                    }
-                } else {
+        pictureView.setOnClickListener {
+            // パーミッションの許可状態を確認する
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    // 許可されている
                     showChooser()
+                } else {
+                    // 許可されていないので許可ダイアログを表示する
+                    requestPermissions(
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        PERMISSIONS_REQUEST_CODE
+                    )
+
+                    return@setOnClickListener
                 }
+            } else {
+                showChooser()
+            }
 
         }
 
@@ -129,7 +136,7 @@ class AddActivity : AppCompatActivity() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-                    realm.executeTransaction{
+                    realm.executeTransaction {
                         val mymap = realm.where<Memo>()
                             .equalTo("id", mymapId).findFirst()
                         mymap?.memo = memoStr
@@ -141,8 +148,8 @@ class AddActivity : AppCompatActivity() {
             finish()
         }
 
-        deleteBtn.setOnClickListener(){
-            realm.executeTransaction{
+        deleteBtn.setOnClickListener() {
+            realm.executeTransaction {
                 val mymap = realm.where<Memo>()
                     .equalTo("id", mymapId)
                     ?.findFirst()
@@ -157,15 +164,15 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-        override fun onDestroy() {
-            super.onDestroy()
-            realm.close()
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
 
-        private fun showToast(msg: String){
-            val toast = Toast.makeText(this, msg, Toast.LENGTH_LONG)
-            toast.show()
-        }
+    private fun showToast(msg: String) {
+        val toast = Toast.makeText(this, msg, Toast.LENGTH_LONG)
+        toast.show()
+    }
 
     private fun showChooser() {
         // ギャラリーから選択するIntent
@@ -226,7 +233,8 @@ class AddActivity : AppCompatActivity() {
             val matrix = Matrix()
             matrix.postScale(scale, scale)
 
-            val resizedImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
+            val resizedImage =
+                Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
 
             // BitmapをImageViewに設定する
             pictureView.setImageBitmap(resizedImage)
@@ -235,7 +243,7 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    }
+}
 
 
 

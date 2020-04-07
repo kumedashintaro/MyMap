@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="true"
+        android:dialogTitle="マーカー色選択"
+        android:entries="@array/markercolor_labels"
+        android:entryValues="@array/markercolor_values"
+        android:key="markercolor"
+        android:title="マーカー色選択" />
+
+</PreferenceScreen>

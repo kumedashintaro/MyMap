@@ -7,7 +7,7 @@
     </string-array>
     <string-array name="markercolor_values">
         <item>red</item>
-        <item>bule</item>
+        <item>blue</item>
         <item>green</item>
     </string-array>
 </resources>

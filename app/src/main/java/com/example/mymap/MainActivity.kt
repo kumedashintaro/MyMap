@@ -1,17 +1,12 @@
 package com.example.mymap
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.text.format.DateFormat
-import android.view.Menu
-import android.view.MenuItem
-import android.view.WindowManager
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -36,6 +31,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var lastLocation: Location
     private var locationCallback: LocationCallback? = null
     private lateinit var realm: Realm
+    private lateinit var mMarker: GoogleMap
 
 
     //メニュー表示させる
@@ -47,6 +43,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         //画面をスリープにしない
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         val mapFragment = supportFragmentManager
@@ -72,7 +69,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
         checkPermission()
     }
 
@@ -168,10 +164,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             )
             putsMarkers()
         }
+
     }
 
     private fun putsMarkers() {
+
         mMap.clear()
+
         val realmResult = realm.where(Memo::class.java)
             .findAll()
         for (memo: Memo in realmResult) {
@@ -183,28 +182,29 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 .draggable(false)  //マーカーはドラッグ不可
 
             //マーカーの外観
-            val pref = getSharedPreferences("preferences", Context.MODE_PRIVATE)
-            val stringValue = pref.getString("markercolor_values", "")
+            val pref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            val stringValue = pref.getString("markercolor", "")
 
             if (stringValue == "red") {
                 val descriptor =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
                 marker.icon(descriptor)
-            } else if(stringValue == "blue"){
+            } else if (stringValue == "blue") {
                 val descriptor =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
                 marker.icon(descriptor)
-            }else if(stringValue == "green"){
+            } else if (stringValue == "green") {
                 val descriptor =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
                 marker.icon(descriptor)
             }
 
-
             //マーカー追加
             mMap.addMarker(marker)
+
         }
     }
+
 
     private fun showToast(msg: String) {
         val toast = Toast.makeText(this, msg, Toast.LENGTH_LONG)
@@ -223,5 +223,4 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }

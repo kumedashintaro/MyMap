@@ -31,7 +31,6 @@ class CustomRecyclerViewAdapter(realmResults: RealmResults<Memo>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mymap = rResults[position]
-
         val decodedString = Base64.decode(mymap?.picture, Base64.DEFAULT) // 文字列をbase64形式に変更
         val decodeByte = BitmapFactory.decodeByteArray(
             decodedString,
@@ -43,16 +42,13 @@ class CustomRecyclerViewAdapter(realmResults: RealmResults<Memo>) :
         holder.datetimeText?.text = DateFormat.format("yyyyy/MM/dd kk:mm", mymap?.dateTime)
         holder.memoText?.text = mymap?.memo.toString()
         holder.picture?.setImageDrawable(pictureDrawable)//Drawableに変換したものをセット
-
         holder.itemView.setBackgroundColor(if (position % 2 == 0) Color.TRANSPARENT else Color.WHITE)
-
         holder.itemView.setOnClickListener {
             val intent = Intent(it.context, AddActivity::class.java)
             intent.putExtra("id", mymap?.id)
             it.context.startActivity(intent)
         }
     }
-
 }
 
 

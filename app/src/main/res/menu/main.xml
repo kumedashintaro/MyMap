@@ -6,9 +6,6 @@
         android:id="@+id/list"
         android:title="一覧" />
     <item
-        android:id="@+id/favorite"
-        android:title="お気に入り" />
-    <item
         android:id="@+id/markersetting"
         android:title="マーカー設定" />
 </menu>

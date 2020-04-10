@@ -15,6 +15,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.format.DateFormat
 import android.view.View
 import android.widget.Toast
 import io.realm.Realm
@@ -24,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_add.*
 import java.io.ByteArrayOutputStream
 import java.util.*
 import android.util.Base64
+import com.google.android.gms.maps.model.MarkerOptions
 
 class AddActivity : AppCompatActivity() {
     private lateinit var realm: Realm
@@ -34,7 +36,7 @@ class AddActivity : AppCompatActivity() {
     }
 
     private var mPictureUri: Uri? = null
-
+    val marker = MarkerOptions()
 
     @SuppressLint("WrongThread")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +50,6 @@ class AddActivity : AppCompatActivity() {
             val mymap = realm.where<Memo>()
                 .equalTo("id", mymapId).findFirst()
             memoEdit.setText(mymap?.memo.toString())
-
 
             val decodedString = Base64.decode(mymap?.picture, Base64.DEFAULT) // 文字列をbase64形式に変更
             val decodeByte = BitmapFactory.decodeByteArray(
@@ -87,15 +88,11 @@ class AddActivity : AppCompatActivity() {
             } else {
                 showChooser()
             }
-
         }
 
-
         saveBtn.setOnClickListener {
-
             when (mymapId) {
                 0L -> {
-////////////////////////////////////////////////////////////////////////////////////////////////////////
                     // 添付画像を取得する
                     val drawable = pictureView.drawable as? BitmapDrawable
                     // 添付画像が設定されていれば画像を取り出してBASE64エンコードする
@@ -105,8 +102,6 @@ class AddActivity : AppCompatActivity() {
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos)
                     }
                     val bitmapString = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
                     val memoStr = memoEdit.text?.toString() ?: ""
                     realm.executeTransaction {
                         val maxId = realm.where<Memo>().max("id")
@@ -122,8 +117,6 @@ class AddActivity : AppCompatActivity() {
                 //修正処理
                 else -> {
                     val memoStr = memoEdit.text?.toString() ?: ""
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
                     // 添付画像を取得する
                     val drawable = pictureView.drawable as? BitmapDrawable
                     // 添付画像が設定されていれば画像を取り出してBASE64エンコードする
@@ -133,9 +126,6 @@ class AddActivity : AppCompatActivity() {
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos)
                     }
                     val bitmapString = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
                     realm.executeTransaction {
                         val mymap = realm.where<Memo>()
                             .equalTo("id", mymapId).findFirst()
@@ -225,10 +215,10 @@ class AddActivity : AppCompatActivity() {
                 return
             }
 
-            // 取得したBimapの長辺を500ピクセルにリサイズする
+            // 取得したBimapの長辺を1000ピクセルにリサイズする
             val imageWidth = image.width
             val imageHeight = image.height
-            val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight) // (1)
+            val scale = Math.min(1000.toFloat() / imageWidth, 1000.toFloat() / imageHeight) // (1)
 
             val matrix = Matrix()
             matrix.postScale(scale, scale)
@@ -242,7 +232,6 @@ class AddActivity : AppCompatActivity() {
             mPictureUri = null
         }
     }
-
 }
 
 

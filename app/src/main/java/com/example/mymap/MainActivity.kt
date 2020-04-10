@@ -26,12 +26,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private val MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 1
-
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
     private var locationCallback: LocationCallback? = null
     private lateinit var realm: Realm
-    private lateinit var mMarker: GoogleMap
 
 
     //メニュー表示させる
@@ -70,6 +68,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         checkPermission()
+
+        var intent = Intent(this, PictureDetailActivity::class.java)
+        mMap.apply {
+            setOnInfoWindowClickListener { marker ->
+                intent.putExtra("marker", marker.title)
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onPause() {
@@ -83,7 +89,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onDestroy()
         realm.close()
     }
-
 
     private fun checkPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -164,13 +169,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             )
             putsMarkers()
         }
-
     }
 
     private fun putsMarkers() {
-
         mMap.clear()
-
         val realmResult = realm.where(Memo::class.java)
             .findAll()
         for (memo: Memo in realmResult) {
@@ -198,13 +200,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
                 marker.icon(descriptor)
             }
-
             //マーカー追加
             mMap.addMarker(marker)
-
         }
     }
-
 
     private fun showToast(msg: String) {
         val toast = Toast.makeText(this, msg, Toast.LENGTH_LONG)

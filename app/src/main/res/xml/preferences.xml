@@ -8,6 +8,7 @@
         android:dialogTitle="マーカー色選択"
         android:entries="@array/markercolor_labels"
         android:entryValues="@array/markercolor_values"
+        android:icon="@drawable/ic_place_black_24dp"
         android:key="markercolor"
         android:title="マーカー色選択" />
 

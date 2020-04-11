@@ -14,11 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PictureDetailActivity"></activity>
-        <activity android:name=".MarkerSetActivity" />
-        <activity android:name=".ListActivity" />
+        <activity android:name=".PictureDetailActivity"
+            android:label="添付画像">
+        </activity>
+        <activity android:name=".MarkerSetActivity"
+            android:label="設定">
+        </activity>
+        <activity
+            android:name=".ListActivity"
+            android:label="一覧">
+        </activity>
         <activity android:name=".AddActivity" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_key" />

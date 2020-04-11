@@ -156,8 +156,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         lastLocation = locationResult.lastLocation
                         val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng))
-                        textView.text =
-                            "Lat:${lastLocation.latitude}, Lng:${lastLocation.longitude}"
+                        //textView.text =
+                        //"Lat:${lastLocation.latitude}, Lng:${lastLocation.longitude}"経度を非表示
                     }
                 }
             }
@@ -198,6 +198,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             } else if (stringValue == "green") {
                 val descriptor =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+                marker.icon(descriptor)
+            } else if (stringValue == "yellow") {
+                val descriptor =
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)
+                marker.icon(descriptor)
+            } else if (stringValue == "violet") {
+                val descriptor =
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)
+                marker.icon(descriptor)
+            } else if (stringValue == "rose") {
+                val descriptor =
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)
                 marker.icon(descriptor)
             }
             //マーカー追加

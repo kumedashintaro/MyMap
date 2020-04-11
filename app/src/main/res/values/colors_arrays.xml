@@ -4,10 +4,18 @@
         <item>赤</item>
         <item>青</item>
         <item>緑</item>
+        <item>黄色</item>
+        <item>紫</item>
+        <item>ピンク</item>
+
     </string-array>
     <string-array name="markercolor_values">
         <item>red</item>
         <item>blue</item>
         <item>green</item>
+        <item>yellow</item>
+        <item>violet</item>
+        <item>rose</item>
+
     </string-array>
 </resources>

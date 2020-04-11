@@ -1,4 +1,4 @@
-package com.example.mymap
+package shintaro.mymap
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

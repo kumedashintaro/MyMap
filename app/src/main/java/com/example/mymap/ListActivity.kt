@@ -1,13 +1,15 @@
-package com.example.mymap
+package shintaro.mymap
 
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import shintaro.mymap.Memo
 import io.realm.Realm
 import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_list.*
+import shintaro.mymap.R
 
 class ListActivity : AppCompatActivity() {
 

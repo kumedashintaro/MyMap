@@ -1,8 +1,10 @@
-package com.example.mymap
+package shintaro.mymap
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
+import shintaro.mymap.SettingsFragment
+import shintaro.mymap.R
 
 class MarkerSetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

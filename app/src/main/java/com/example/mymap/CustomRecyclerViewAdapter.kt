@@ -1,4 +1,4 @@
-package com.example.mymap
+package shintaro.mymap
 
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -11,7 +11,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import shintaro.mymap.Memo
+import shintaro.mymap.ViewHolder
 import io.realm.RealmResults
+import shintaro.mymap.R
 
 
 class CustomRecyclerViewAdapter(realmResults: RealmResults<Memo>) :

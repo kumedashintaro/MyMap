@@ -1,4 +1,4 @@
-package com.example.mymap
+package shintaro.mymap
 
 import android.app.Application
 import io.realm.Realm

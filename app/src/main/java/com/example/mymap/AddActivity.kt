@@ -1,4 +1,4 @@
-package com.example.mymap
+package shintaro.mymap
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -26,6 +26,7 @@ import java.io.ByteArrayOutputStream
 import java.util.*
 import android.util.Base64
 import com.google.android.gms.maps.model.MarkerOptions
+import shintaro.mymap.R
 
 class AddActivity : AppCompatActivity() {
     private lateinit var realm: Realm

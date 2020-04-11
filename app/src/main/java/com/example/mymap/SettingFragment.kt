@@ -1,7 +1,8 @@
-package com.example.mymap
+package shintaro.mymap
 
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
+import shintaro.mymap.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
 

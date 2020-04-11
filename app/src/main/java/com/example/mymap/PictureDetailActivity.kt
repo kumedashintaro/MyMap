@@ -1,4 +1,4 @@
-package com.example.mymap
+package shintaro.mymap
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,6 +13,7 @@ import io.realm.Realm
 import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.activity_picture_detail.*
+import shintaro.mymap.R
 import java.io.ByteArrayOutputStream
 
 class PictureDetailActivity : AppCompatActivity() {

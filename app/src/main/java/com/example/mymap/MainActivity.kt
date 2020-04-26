@@ -187,31 +187,39 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             val pref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
             val stringValue = pref.getString("markercolor", "")
 
-            if (stringValue == "red") {
-                val descriptor =
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
-                marker.icon(descriptor)
-            } else if (stringValue == "blue") {
-                val descriptor =
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
-                marker.icon(descriptor)
-            } else if (stringValue == "green") {
-                val descriptor =
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
-                marker.icon(descriptor)
-            } else if (stringValue == "yellow") {
-                val descriptor =
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)
-                marker.icon(descriptor)
-            } else if (stringValue == "violet") {
-                val descriptor =
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)
-                marker.icon(descriptor)
-            } else if (stringValue == "rose") {
-                val descriptor =
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)
-                marker.icon(descriptor)
+            when (stringValue){
+                "red" -> {
+                    val descriptor =
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+                    marker.icon(descriptor)
+                }
+                "blue" -> {
+                    val descriptor =
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
+                    marker.icon(descriptor)
+                }
+                "green" -> {
+                    val descriptor =
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+                    marker.icon(descriptor)
+                }
+                "yellow" -> {
+                    val descriptor =
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)
+                    marker.icon(descriptor)
+                }
+                "violet" -> {
+                    val descriptor =
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)
+                    marker.icon(descriptor)
+                }
+                "rose" -> {
+                    val descriptor =
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)
+                    marker.icon(descriptor)
+                }
             }
+
             //マーカー追加
             mMap.addMarker(marker)
         }

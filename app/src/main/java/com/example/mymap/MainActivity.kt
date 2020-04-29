@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -51,10 +52,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         realm = Realm.getDefaultInstance()
 
         memoBtn.setOnClickListener {
-            val intent = Intent(this, AddActivity::class.java)
-            intent.putExtra("lat", lastLocation.latitude)
-            intent.putExtra("lng", lastLocation.longitude)
-            startActivity(intent)
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR)
+                != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted
+                checkPermission()
+            }else {
+
+                val intent = Intent(this, AddActivity::class.java)
+                intent.putExtra("lat", lastLocation.latitude)
+                intent.putExtra("lng", lastLocation.longitude)
+                startActivity(intent)
+            }
         }
     }
 
@@ -227,6 +236,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun showToast(msg: String) {
         val toast = Toast.makeText(this, msg, Toast.LENGTH_LONG)
+        toast.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

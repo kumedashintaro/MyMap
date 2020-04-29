@@ -53,12 +53,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         memoBtn.setOnClickListener {
 
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR)
-                != PackageManager.PERMISSION_GRANTED) {
-                // Permission is not granted
-                checkPermission()
-            }else {
-
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                //許可を求め、拒否されていた場合
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION
+                )
+            } else {
                 val intent = Intent(this, AddActivity::class.java)
                 intent.putExtra("lat", lastLocation.latitude)
                 intent.putExtra("lng", lastLocation.longitude)
@@ -196,7 +202,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             val pref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
             val stringValue = pref.getString("markercolor", "")
 
-            when (stringValue){
+            when (stringValue) {
                 "red" -> {
                     val descriptor =
                         BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
